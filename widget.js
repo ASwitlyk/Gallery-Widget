@@ -19,9 +19,6 @@ function GalleryWidget(data, mode) {
 	// default mode is Single Image layout unless user indicated thumbnail mode
 	mode === "thumbnail" ? this.thumbnailMode(containerDiv, data) : this.singleImage(containerDiv, data);
 
-
-	console.log('data is: ', data);
-
 }
 
 GalleryWidget.prototype.thumbnailMode = function(node) {
@@ -39,16 +36,53 @@ GalleryWidget.prototype.thumbnailMode = function(node) {
 
 GalleryWidget.prototype.singleImage = function(node, data) {
 
+
+	// currentIndex variable, will increase upto imgTagArray.length - 1
+	// then reset to zero
+	var nextIndex = 1;
+
 	// create a div with a class styled to contain one image at a time
 	var galleryDiv = document.createElement("div");
+	galleryDiv.setAttribute("class", "singleImgGallery");
 
 	// insert one area into user defined gallery container node
-	var aChild = node.appendChild(galleryDiv);
+	node.appendChild(galleryDiv);
 
-	//test image
-	var img = document.createElement("img");
-	img.setAttribute('src', data[0].image);
-	var bChild = node.appendChild(img);
+	// Populate array with img tags
+	var imgTagArray = data.map(function(value) {
+		var imgTag = document.createElement("img");
+		imgTag.setAttribute("src", value.image);
+		imgTag.setAttribute("class", "singleImg");
 
+		// Add an event handler to each img tag when clicked, gallery div
+		// will remove current pic and add new pic
+		imgTag.addEventListener("click", function() {
+
+			galleryDiv.firstElementChild.remove();
+			galleryDiv.appendChild(imgTagArray[nextIndex]);
+			// On click will display the next photo in the imgTagArray, when
+			// at last photo, will cycle back to first image
+			if(nextIndex < imgTagArray.length - 1) {
+				nextIndex++;
+			} else {
+				nextIndex = 0;
+			}
+		});
+
+		return imgTag;
+	});
+
+	// Place first image in set into galleryDiv
+	galleryDiv.appendChild(imgTagArray[0]);
+	console.log('imgTagArray ', imgTagArray);
 
 }
+
+
+
+
+
+
+
+
+
