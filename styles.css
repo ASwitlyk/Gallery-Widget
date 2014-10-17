@@ -26,16 +26,17 @@
 .single-img-gallery-container-none {
 
 	height: auto;
+	max-height: 600px;
 	min-height: 100%;
-	width: 600px;
-	
+	max-width: 600px;
 
 }
 
 .single-img {
 
 	height: auto;
-	min-height: 100%;
+	/*min-height: 100%;*/
+	max-height: 600px;
 	width: 600px;
 	
 }
@@ -63,7 +64,7 @@
 	max-width: 150px;
 	height: auto;
 	display: inline-block;
-	/*overflow-x: scroll;*/
+	overflow-x: scroll;
 }
 
 .thumbnail-container {
