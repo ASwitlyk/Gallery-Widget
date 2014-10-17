@@ -15,22 +15,70 @@ function GalleryWidget(data, mode) {
 
 	// gallery will be inserted into container div (div which user gave an id of gallery)
 	var containerDiv = document.getElementById("gallery");
+	containerDiv.setAttribute("class", "gallery-container");
 
 	// default mode is Single Image layout unless user indicated thumbnail mode
 	mode === "thumbnail" ? this.thumbnailMode(containerDiv, data) : this.singleImage(containerDiv, data);
 
 }
 
-GalleryWidget.prototype.thumbnailMode = function(node) {
+GalleryWidget.prototype.thumbnailMode = function(node, data) {
 
 	// div to display the large version of current image
 	var displayDiv = document.createElement("div");
+	displayDiv.setAttribute("class", "large-img-container");
 
 	// div to display scrollable thumbnail versions of images in gallery
-	var thumbNailDiv = document.createElement("div");
+	var thumbnailDiv = document.createElement("div");
+	thumbnailDiv.setAttribute("class", "thumbnail-container");
 
 	var aChild = node.appendChild(displayDiv);
-	var bChild = node.appendChild(thumbNailDiv);
+	var bChild = node.appendChild(thumbnailDiv);
+
+	// place all data into img tags with a thumbnail class
+	// which will limit the size of the pics and display them inline
+	var imgTagArray = data.map(function(value) {
+		var imgTag = document.createElement("img");
+		imgTag.setAttribute("src", value.image);
+		imgTag.setAttribute("class", "thumbnail-Img");
+
+		// When each image clicked, replace largeImg with thumbnail clicked
+		imgTag.addEventListener("click", function(item) {
+			console.log("clicked item is: ", item);
+			largeImg = item.toElement.cloneNode();
+			largeImg.setAttribute("class", "large-img");
+			console.log('largeImg is now: ', largeImg);
+			displayDiv.firstElementChild.remove();
+			displayDiv.appendChild(largeImg);
+		});
+
+		return imgTag;
+	});
+
+	// set initial large image to the first image in the gallery by default
+	var largeImg = imgTagArray[0].cloneNode();
+	largeImg.setAttribute("class", "large-img");
+	displayDiv.appendChild(largeImg);
+	console.log('dupNode is: ', largeImg);
+
+
+	// create another img element
+	var testImg = document.createElement("img");
+	testImg.setAttribute("src", data[0].image);
+	// insert into displayDiv
+	// displayDiv.appendChild(testImg);
+
+	// bigImg[0].setAttribute("class", "main-img");
+
+	// var bigImg = aChild.appendChild(imgTagArray[0]);
+	// bigImg.setAttribute("class", "main-img");
+
+	imgTagArray.forEach(function(value) {
+		console.log('value is: ', value);
+		thumbnailDiv.appendChild(value);
+	});
+
+
 
 }
 
@@ -52,7 +100,7 @@ GalleryWidget.prototype.singleImage = function(node, data) {
 	var imgTagArray = data.map(function(value) {
 		var imgTag = document.createElement("img");
 		imgTag.setAttribute("src", value.image);
-		imgTag.setAttribute("class", "singleImg");
+		imgTag.setAttribute("class", "single-Img");
 
 		// Add an event handler to each img tag when clicked, gallery div
 		// will remove current pic and add new pic
