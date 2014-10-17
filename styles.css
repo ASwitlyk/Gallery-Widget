@@ -1,27 +1,67 @@
+/************** Misc. Formatting *************/
+
+.center {
+	text-align: center;
+}
+
+/********* Container to show widget in for demo  *****************/
+
+.main-container {
+	width: 100%;
+
+}
+
+
 .gallery-container {
+
 	width: 600px;
-	height: 600px;
+	/*height: 600px;*/
+	/* To center galleries in containing block element */
+	margin: auto;
+	padding: 15px 15px 15px 15px;
+
+}
+/************ Single Image Mode  *************************/
+
+.single-img-gallery-container-none {
+
+	height: auto;
+	min-height: 100%;
+	width: 600px;
+	
+
+}
+
+.single-img {
+
+	height: auto;
+	min-height: 100%;
+	width: 600px;
+	
 }
 
 /*********** Thumbnail Mode Styles  **********************/
 
 .large-img-container {
 
-	height: 800px;
-	width: 800px;
+	height: auto;
+	min-height: 100%;
+	width: 600px;
+
+	margin-bottom: 15px;
 
 }
 
 .large-img {
 
-	height: 100%;
-	width: 100%;
+	max-width: 100%;
+	height: auto;
 
 }
 
 .thumbnail-Img {
-	width: 150px;
-	height: 150px;
+	max-width: 150px;
+	height: auto;
 	display: inline-block;
 	/*overflow-x: scroll;*/
 }
@@ -30,8 +70,7 @@
 
 	overflow-y: hidden;
 	overflow-x: scroll;
-	height: 200px;
-	width: 800px;
+	/*height: 200px;*/
 	white-space: nowrap;
 
 }

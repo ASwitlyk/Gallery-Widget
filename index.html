@@ -6,23 +6,34 @@
 	</head>
 
 	<body>
-		<h1>Hello World</h1>
 
-		<div id="gallery">
-			
+		<div class="main-container">
+			<!-- div the user designates as the gallery -->
+
+			<h1 class="center">Thumbnail Mode</h1>
+			<div id="gallery"></div>
+
+			<h1 class="center">Single Image Mode</h1>
+			<div id="gallery2"></div>
+
 
 		</div>
 
-		
-
 		<script type="text/javascript" src="widget.js"></script>
-
 		<!-- Test JSON data -->
 		<script type="text/javascript" src="sample_data.js"></script>
+		<script type="text/javascript" src="sample_data2.js"></script>
 
 		<script type="text/javascript">
+		window.onload = function() {
 
-			var gallery = new GalleryWidget(sampleJSON, 'thumbnail');
+			// instantiate two galleries, each with unique test JSON data
+			var gallery = new GalleryWidget(sampleJSON, 'thumbnail', 'gallery');
+
+			var gallery2 = new GalleryWidget(secondSampleJSON, 'none', 'gallery2');
+			
+		}
+
 
 		</script>
 	</body>

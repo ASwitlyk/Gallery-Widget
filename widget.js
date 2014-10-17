@@ -1,26 +1,29 @@
-console.log('yes');
-// Display image gallery in two different modes
-	// Thumbnail mode = widget comprised of two main areas, first area displays a large version of the current image, 
-	// second area displays a scrollable filmstrip of thumbnails for each image in the gallery. Clicking on a thumbnail makes that 
-	// image the current image and displays it in the first area (replace image)
+/*
+* Gallery Widget constructor creates an image gallery from JSON data and offers two modes of display, 
+* a single image mode and a thumbnail mode
+*
+* takes three parameters:
+* data: an array of objects. Each object should have an image property which will contain the src data for the 
+*       gallery's img tag's src attributes
+* mode: a string which will indicate the gallery mode to be displayed. "thumbnail" mode or "single", defaults to single
+* divId: the ID of the div which will serve as the container of the gallery
+* (this last parameter was added to display multiple gallerys in one HTML page for demonstration purposes)
+*  
+*/
 
-	// Single Image mode - single area, image displayed one at a time in main area, clicking on image changes to next image, when last image
-	// reached, should cycle back
+function GalleryWidget(data, mode, divId) {
 
-// Widget takes two piece of data for its configuration, list of images and its mode (can take JSON string)
-
-// create constructor, when created will put either one or two div elements into page
-
-function GalleryWidget(data, mode) {
-
-	// gallery will be inserted into container div (div which user gave an id of gallery)
-	var containerDiv = document.getElementById("gallery");
+	// gallery will be inserted into container div with the id designated by divId parameter
+	var containerDiv = document.getElementById(divId);
 	containerDiv.setAttribute("class", "gallery-container");
 
 	// default mode is Single Image layout unless user indicated thumbnail mode
 	mode === "thumbnail" ? this.thumbnailMode(containerDiv, data) : this.singleImage(containerDiv, data);
 
 }
+
+// Method creates two divs to display images from data parameter, 
+// a large image container and an x-axis scrollable thumbnail filmstrip container
 
 GalleryWidget.prototype.thumbnailMode = function(node, data) {
 
@@ -32,24 +35,24 @@ GalleryWidget.prototype.thumbnailMode = function(node, data) {
 	var thumbnailDiv = document.createElement("div");
 	thumbnailDiv.setAttribute("class", "thumbnail-container");
 
-	var aChild = node.appendChild(displayDiv);
-	var bChild = node.appendChild(thumbnailDiv);
+	// append both divs to user designated gallery div
+	node.appendChild(displayDiv);
+	node.appendChild(thumbnailDiv);
 
-	// place all data into img tags with a thumbnail class
-	// which will limit the size of the pics and display them inline
+	// Array of img tags whose src attributes are provided from user's JSON data  
 	var imgTagArray = data.map(function(value) {
 		var imgTag = document.createElement("img");
 		imgTag.setAttribute("src", value.image);
 		imgTag.setAttribute("class", "thumbnail-Img");
 
-		// When each image clicked, replace largeImg with thumbnail clicked
+		// When each image is clicked, replace largeImg with thumbnail clicked
 		imgTag.addEventListener("click", function(item) {
-			console.log("clicked item is: ", item);
+
 			largeImg = item.toElement.cloneNode();
 			largeImg.setAttribute("class", "large-img");
-			console.log('largeImg is now: ', largeImg);
 			displayDiv.firstElementChild.remove();
 			displayDiv.appendChild(largeImg);
+
 		});
 
 		return imgTag;
@@ -59,48 +62,37 @@ GalleryWidget.prototype.thumbnailMode = function(node, data) {
 	var largeImg = imgTagArray[0].cloneNode();
 	largeImg.setAttribute("class", "large-img");
 	displayDiv.appendChild(largeImg);
-	console.log('dupNode is: ', largeImg);
 
-
-	// create another img element
-	var testImg = document.createElement("img");
-	testImg.setAttribute("src", data[0].image);
-	// insert into displayDiv
-	// displayDiv.appendChild(testImg);
-
-	// bigImg[0].setAttribute("class", "main-img");
-
-	// var bigImg = aChild.appendChild(imgTagArray[0]);
-	// bigImg.setAttribute("class", "main-img");
-
+	// populate thumbnail div with all image tags created from user's JSON data
 	imgTagArray.forEach(function(value) {
-		console.log('value is: ', value);
 		thumbnailDiv.appendChild(value);
 	});
 
-
-
 }
+
+
+// Method creates one div to display images from user's JSON data, one image at a time which
+// and which can be cycled through by clicking on the current image displayed
 
 GalleryWidget.prototype.singleImage = function(node, data) {
 
 
-	// currentIndex variable, will increase upto imgTagArray.length - 1
-	// then reset to zero
+	// next image to display when current image clicked, initiazed at 1 since first image displayed at index 0
 	var nextIndex = 1;
 
-	// create a div with a class styled to contain one image at a time
+	// div to display the images one at a time 
 	var galleryDiv = document.createElement("div");
-	galleryDiv.setAttribute("class", "singleImgGallery");
+	galleryDiv.setAttribute("class", "single-img-gallery-container");
 
-	// insert one area into user defined gallery container node
+	// append div to user defined gallery container block element
 	node.appendChild(galleryDiv);
 
-	// Populate array with img tags
+	// Populate array with img tags which will be cycled through when user clicks on them
 	var imgTagArray = data.map(function(value) {
+
 		var imgTag = document.createElement("img");
 		imgTag.setAttribute("src", value.image);
-		imgTag.setAttribute("class", "single-Img");
+		imgTag.setAttribute("class", "single-img");
 
 		// Add an event handler to each img tag when clicked, gallery div
 		// will remove current pic and add new pic
@@ -108,8 +100,8 @@ GalleryWidget.prototype.singleImage = function(node, data) {
 
 			galleryDiv.firstElementChild.remove();
 			galleryDiv.appendChild(imgTagArray[nextIndex]);
-			// On click will display the next photo in the imgTagArray, when
-			// at last photo, will cycle back to first image
+
+			// cycle through images, when displaying last img tag nextIndex reset to zero to cycle back through images
 			if(nextIndex < imgTagArray.length - 1) {
 				nextIndex++;
 			} else {
@@ -120,17 +112,7 @@ GalleryWidget.prototype.singleImage = function(node, data) {
 		return imgTag;
 	});
 
-	// Place first image in set into galleryDiv
+	// display first image in imgTagArray by default when gallery created
 	galleryDiv.appendChild(imgTagArray[0]);
-	console.log('imgTagArray ', imgTagArray);
 
 }
-
-
-
-
-
-
-
-
-
